@@ -102,9 +102,9 @@
                         </button>
                     </div>
 
-                    <!-- WhatsApp Redirect for Need Help -->
+                    <!-- Support Link -->
                     <div class="auth-footer-help">
-                        Need help? <a href="https://wa.me/916392376195?text=Hello%20Your%20Finance%20Support,%20I%20need%20assistance%20with%20my%20account" target="_blank" rel="noopener noreferrer"><i class="fa-brands fa-whatsapp" style="color: #25D366; font-size: 1.1rem; margin-right: 3px;"></i> Contact our dedicated support</a>
+                        Need help? <a href="#" onclick="openSupportModal(event)"><i class="fa-regular fa-envelope" style="color: var(--accent-cyan); font-size: 1.1rem; margin-right: 3px;"></i> Contact Platform Support</a>
                     </div>
                 </div>
             </div>
@@ -193,6 +193,10 @@
                             </div>
                         </div>
                     </div>
+                    <button class="btn btn-secondary" title="Populate realistic sample data for reviewer demo" onclick="loadDemoData()">
+                        <i class="fa-solid fa-bolt" style="color: var(--accent-amber);"></i>
+                        <span>Load Demo Data</span>
+                    </button>
                     <button class="btn btn-primary" id="btn-quick-add" onclick="openAddExpenseModal()">
                         <i class="fa-solid fa-plus"></i>
                         <span>Add Expense</span>
@@ -223,8 +227,11 @@
                         </div>
 
                         <div style="display: flex; justify-content: center; gap: 1rem; flex-wrap: wrap;">
-                            <button class="btn btn-primary" onclick="openAddExpenseModal()" style="padding: 1.1rem 2.8rem; font-size: 1.1rem; font-weight: 700; border-radius: 14px; box-shadow: 0 10px 30px rgba(16, 185, 129, 0.4);">
+                            <button class="btn btn-primary" onclick="openAddExpenseModal()" style="padding: 1.1rem 2.5rem; font-size: 1.05rem; font-weight: 700; border-radius: 14px; box-shadow: 0 10px 30px rgba(16, 185, 129, 0.4);">
                                 <i class="fa-solid fa-plus" style="margin-right: 8px;"></i> Add Today's Expense
+                            </button>
+                            <button class="btn btn-secondary" onclick="loadDemoData()" style="padding: 1.1rem 2.2rem; font-size: 1.05rem; font-weight: 700; border-radius: 14px;">
+                                <i class="fa-solid fa-bolt" style="color: var(--accent-amber); margin-right: 8px;"></i> Load Sample Demo Data
                             </button>
                         </div>
                     </div>
@@ -459,9 +466,9 @@
 
                     <div style="text-align: center; padding-top: 1.5rem; border-top: 1px solid var(--border-card);">
                         <p style="font-size: 0.9rem; color: var(--text-muted); margin-bottom: 1rem;">Have questions or need assistance with your financial dashboard?</p>
-                        <a href="https://wa.me/916392376195?text=Hello%20Your%20Finance%20Support,%20I%20have%20a%20question%20about%20my%20account" target="_blank" rel="noopener noreferrer" class="btn btn-primary" style="padding: 0.75rem 1.5rem; text-decoration: none;">
-                            <i class="fa-brands fa-whatsapp" style="font-size: 1.1rem;"></i> Contact Dedicated Support (+91 6392376195)
-                        </a>
+                        <button class="btn btn-primary" onclick="openSupportModal(event)" style="padding: 0.75rem 1.5rem;">
+                            <i class="fa-regular fa-envelope" style="font-size: 1.1rem;"></i> Contact Platform Support
+                        </button>
                     </div>
                 </div>
             </section>
@@ -617,17 +624,45 @@
         </div>
     </div>
 
+    <!-- Support Contact Modal -->
+    <div class="modal-overlay" id="modal-support">
+        <div class="modal-card glass-card">
+            <div class="modal-header">
+                <h3>Contact Support</h3>
+                <button class="close-modal" onclick="closeModal('modal-support')">&times;</button>
+            </div>
+            <form id="form-contact-support" onsubmit="handleSupportSubmit(event)">
+                <div class="form-group">
+                    <label>Your Email Address</label>
+                    <input type="email" id="supp-email" class="form-input" placeholder="reviewer@company.com" required>
+                </div>
+                <div class="form-group">
+                    <label>Subject / Query</label>
+                    <input type="text" id="supp-subject" class="form-input" placeholder="e.g. Account Question or Feedback" required>
+                </div>
+                <div class="form-group">
+                    <label>Message</label>
+                    <textarea id="supp-message" class="form-input" style="height: 100px; padding: 0.75rem 1rem; resize: none;" placeholder="How can we help you?" required></textarea>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" onclick="closeModal('modal-support')">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Send Inquiry</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
     <!-- Floating Toast Notifications Container -->
     <div id="toast-container" class="toast-container"></div>
 
     <!-- Modular JavaScript Engines (Loaded in Dependency Order) -->
-    <script src="js/config.js?v=20260728_v19"></script>
-    <script src="js/database.js?v=20260728_v19"></script>
-    <script src="js/ui-components.js?v=20260728_v19"></script>
-    <script src="js/notifications.js?v=20260728_v19"></script>
-    <script src="js/auth.js?v=20260728_v19"></script>
-    <script src="js/charts.js?v=20260728_v19"></script>
-    <script src="js/views.js?v=20260728_v19"></script>
-    <script src="js/app.js?v=20260728_v19"></script>
+    <script src="js/config.js?v=20260728_v20"></script>
+    <script src="js/database.js?v=20260728_v20"></script>
+    <script src="js/ui-components.js?v=20260728_v20"></script>
+    <script src="js/notifications.js?v=20260728_v20"></script>
+    <script src="js/auth.js?v=20260728_v20"></script>
+    <script src="js/charts.js?v=20260728_v20"></script>
+    <script src="js/views.js?v=20260728_v20"></script>
+    <script src="js/app.js?v=20260728_v20"></script>
 </body>
 </html>

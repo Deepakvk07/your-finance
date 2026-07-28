@@ -132,11 +132,55 @@ function loadUserAppState() {
     if (!currentUser) return;
     const userStorageKey = `your_finance_vault_v5_${currentUser.email.toLowerCase()}`;
     appState = JSON.parse(localStorage.getItem(userStorageKey)) || JSON.parse(JSON.stringify(DEFAULT_USER_FINANCE_TEMPLATE));
-    initNotifications();
+
+    if ((!appState.transactions || appState.transactions.length === 0) && (!appState.accounts || appState.accounts.length === 0)) {
+        loadDemoData(true);
+    } else {
+        initNotifications();
+    }
 }
 
 function saveAppState() {
     if (!currentUser) return;
     const userStorageKey = `your_finance_vault_v5_${currentUser.email.toLowerCase()}`;
     localStorage.setItem(userStorageKey, JSON.stringify(appState));
+}
+
+function loadDemoData(silent = false) {
+    if (!currentUser) return;
+
+    const sampleAccounts = [
+        { name: "HDFC Salary Account", number: "•••• 4892", type: "Savings", balance: 145000.00, icon: "fa-building-columns", class: "savings" },
+        { name: "SBI Credit Card", number: "•••• 9104", type: "Credit Card", balance: 18500.00, icon: "fa-credit-card", class: "credit" },
+        { name: "Cash Wallet", number: "Cash", type: "Checking", balance: 4500.00, icon: "fa-wallet", class: "checking" }
+    ];
+
+    const today = new Date().toISOString().split('T')[0];
+    const prevDays = (days) => new Date(Date.now() - days * 86400000).toISOString().split('T')[0];
+
+    const sampleTransactions = [
+        { id: Date.now() - 1000, title: "Monthly Tech Salary", amount: 120000, category: "Income", date: today, payment: "UPI / GPay", accountName: "HDFC Salary Account", isIncome: true, receipt: true },
+        { id: Date.now() - 2000, title: "Whole Foods Grocery", amount: 4850, category: "Food & Dining", date: prevDays(1), payment: "Card", accountName: "SBI Credit Card", isIncome: false, receipt: true },
+        { id: Date.now() - 3000, title: "Apartment Rent & Maintenance", amount: 28000, category: "Housing", date: prevDays(2), payment: "UPI / GPay", accountName: "HDFC Salary Account", isIncome: false, receipt: true },
+        { id: Date.now() - 4000, title: "High-Speed Fiber Internet", amount: 1499, category: "Utilities", date: prevDays(3), payment: "UPI / GPay", accountName: "HDFC Salary Account", isIncome: false, receipt: true },
+        { id: Date.now() - 5000, title: "Fuel & Metro Transit", amount: 2200, category: "Transportation", date: prevDays(4), payment: "Cash", accountName: "Cash Wallet", isIncome: false, receipt: true },
+        { id: Date.now() - 6000, title: "Dinner & Movie Outing", amount: 1850, category: "Entertainment", date: prevDays(5), payment: "Card", accountName: "SBI Credit Card", isIncome: false, receipt: true },
+        { id: Date.now() - 7000, title: "Mutual Fund Investment SIP", amount: 25000, category: "Shopping", date: prevDays(6), payment: "UPI / GPay", accountName: "HDFC Salary Account", isIncome: false, receipt: true }
+    ];
+
+    appState.accounts = sampleAccounts;
+    appState.transactions = sampleTransactions;
+    appState.customCategories = ["Investments", "Subscriptions", "Healthcare"];
+
+    initNotifications();
+    saveAppState();
+
+    sampleTransactions.forEach(t => dbInsertTransaction(t));
+
+    renderDashboard();
+    renderExpenseLog();
+
+    if (!silent) {
+        showToast("Sample demo data loaded successfully!", "success");
+    }
 }

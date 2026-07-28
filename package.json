@@ -1,0 +1,23 @@
+{
+  "name": "your-finance",
+  "version": "1.0.0",
+  "description": "Personal Finance Tracker & Wealth Command Center",
+  "main": "index.html",
+  "scripts": {
+    "start": "npx -y serve .",
+    "dev": "npx -y serve ."
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Deepakvk07/your-finance.git"
+  },
+  "keywords": [
+    "personal-finance",
+    "expense-tracker",
+    "supabase",
+    "dashboard",
+    "web-app"
+  ],
+  "author": "Deepak",
+  "license": "MIT"
+}

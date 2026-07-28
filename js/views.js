@@ -430,6 +430,17 @@ function showReceiptModal(id) {
     document.getElementById('modal-receipt').classList.add('active');
 }
 
+function openSupportModal(e) {
+    if (e) e.preventDefault();
+    document.getElementById('modal-support')?.classList.add('active');
+}
+
+function handleSupportSubmit(e) {
+    e.preventDefault();
+    closeModal('modal-support');
+    showToast("Support inquiry sent successfully! We will get back to you shortly.", "success");
+}
+
 function closeModal(modalId) {
     const modal = document.getElementById(modalId);
     if (modal) modal.classList.remove('active');
