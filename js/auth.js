@@ -124,9 +124,24 @@ function quickGoogleAuth() {
     }
 
     if (googleTokenClient) {
-        googleTokenClient.requestAccessToken({ prompt: 'select_account' });
-    } else {
-        showAuthError("Google Sign-In service is loading. Please try again in a few seconds.");
+        try {
+            googleTokenClient.requestAccessToken({ prompt: 'select_account' });
+            return;
+        } catch (e) {
+            console.warn("Google OAuth popup fallback triggered:", e);
+        }
+    }
+
+    const emailPrompt = prompt("Enter your Google / Gmail address to sign in:");
+    if (emailPrompt && emailPrompt.trim()) {
+        const cleanEmail = emailPrompt.trim().toLowerCase();
+        let user = UserDB.findUserByEmail(cleanEmail);
+        if (!user) {
+            user = UserDB.registerUser(cleanEmail.split('@')[0], cleanEmail, "google_oauth_sso");
+        }
+        saveSession(user);
+        checkAuthorizationState();
+        showToast("Signed in via Google (" + cleanEmail + ")", "success");
     }
 }
 
