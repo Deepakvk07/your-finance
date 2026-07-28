@@ -16,7 +16,12 @@
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <!-- Official Google Identity Services SDK -->
     <script src="https://accounts.google.com/gsi/client" async defer></script>
-    <link rel="stylesheet" href="style.css?v=20260728_v10">
+    
+    <!-- Modular CSS Stylesheets -->
+    <link rel="stylesheet" href="css/main.css?v=20260728_v17">
+    <link rel="stylesheet" href="css/auth.css?v=20260728_v17">
+    <link rel="stylesheet" href="css/components.css?v=20260728_v17">
+    <link rel="stylesheet" href="css/views.css?v=20260728_v17">
 </head>
 <body class="logged-out">
     <!-- Full-Screen Split Login Gateway (No Sidebar when logged out) -->
@@ -615,6 +620,14 @@
     <!-- Floating Toast Notifications Container -->
     <div id="toast-container" class="toast-container"></div>
 
-    <script src="app.js?v=20260728_v16"></script>
+    <!-- Modular JavaScript Engines (Loaded in Dependency Order) -->
+    <script src="js/config.js?v=20260728_v17"></script>
+    <script src="js/database.js?v=20260728_v17"></script>
+    <script src="js/ui-components.js?v=20260728_v17"></script>
+    <script src="js/notifications.js?v=20260728_v17"></script>
+    <script src="js/auth.js?v=20260728_v17"></script>
+    <script src="js/charts.js?v=20260728_v17"></script>
+    <script src="js/views.js?v=20260728_v17"></script>
+    <script src="js/app.js?v=20260728_v17"></script>
 </body>
 </html>
