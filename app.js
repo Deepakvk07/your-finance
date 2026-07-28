@@ -300,17 +300,10 @@ const UserDB = new UserDatabaseEngine();
 
 // 3. Per-User Isolated Application State Manager (Starts Blank for All Users)
 const DEFAULT_USER_FINANCE_TEMPLATE = {
-    budgets: [
-        { category: "Housing", limit: 25000, spent: 0, icon: "fa-house", color: "#6366F1" },
-        { category: "Food & Dining", limit: 12000, spent: 0, icon: "fa-utensils", color: "#10B981" },
-        { category: "Shopping", limit: 8000, spent: 0, icon: "fa-bag-shopping", color: "#06B6D4" },
-        { category: "Utilities", limit: 5000, spent: 0, icon: "fa-bolt", color: "#F59E0B" },
-        { category: "Transportation", limit: 5000, spent: 0, icon: "fa-car", color: "#3B82F6" },
-        { category: "Entertainment", limit: 4000, spent: 0, icon: "fa-film", color: "#EC4899" }
-    ],
-    accounts: [], // Blank default linked accounts for all users
-    bills: [],
-    transactions: []
+    accounts: [],
+    transactions: [],
+    customCategories: [],
+    notifications: []
 };
 
 // Global Auth & Session Variables
@@ -1155,16 +1148,24 @@ function initCharts() {
 
     if (doughCtx) {
         if (categoryChartInstance) categoryChartInstance.destroy();
-        const spentData = (appState.budgets || []).map(b => b.spent);
-        const hasSpent = spentData.some(v => v > 0);
+        const categoryMap = {};
+        appState.transactions.forEach(t => {
+            if (!t.isIncome && t.category !== 'Income') {
+                categoryMap[t.category] = (categoryMap[t.category] || 0) + t.amount;
+            }
+        });
+
+        const labels = Object.keys(categoryMap);
+        const data = Object.values(categoryMap);
+        const defaultColors = ['#10B981', '#06B6D4', '#6366F1', '#F59E0B', '#EF4444', '#EC4899', '#8B5CF6'];
 
         categoryChartInstance = new Chart(doughCtx, {
             type: 'doughnut',
             data: {
-                labels: (appState.budgets || []).map(b => b.category),
+                labels: labels.length > 0 ? labels : ['Food & Dining', 'Housing', 'Shopping'],
                 datasets: [{
-                    data: hasSpent ? spentData : [1, 1, 1, 1, 1, 1],
-                    backgroundColor: (appState.budgets || []).map(b => b.color),
+                    data: data.length > 0 ? data : [1, 1, 1],
+                    backgroundColor: defaultColors,
                     borderWidth: 0
                 }]
             },
